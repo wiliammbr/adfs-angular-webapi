@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IdentityModel.Tokens;
-using System.Linq;
+﻿using System.Configuration;
 using Microsoft.IdentityModel.Tokens; 
-using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.ActiveDirectory;
 using Owin;
 
@@ -12,7 +7,6 @@ namespace WebApi
 {
     public partial class Startup
     {
-        // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
             app.UseActiveDirectoryFederationServicesBearerAuthentication(
@@ -20,9 +14,11 @@ namespace WebApi
                 {
                     MetadataEndpoint = ConfigurationManager.AppSettings["ida:AdfsMetadataEndpoint"],                  
                     TokenValidationParameters = new TokenValidationParameters() {
-                        ValidAudience = ConfigurationManager.AppSettings["ida:Audience"]
+                        ValidAudience = ConfigurationManager.AppSettings["ida:Audience"],
+                        ValidIssuer = ConfigurationManager.AppSettings["ida:Issuer"]
                     }
-                });
+                }
+            );
         }
     }
 }
